@@ -1,0 +1,128 @@
+#include <iostream>
+using namespace std;
+class Spanning_tree
+{
+int a[10][10];
+int sp[10][10];
+int V;
+int E;
+int minCost;
+int infinity;
+public:
+Spanning_tree()
+{
+infinity = 99;
+for (int i = 0; i < 10; i++)
+for (int j = 0; j < 10; j++)
+{
+a[i][j] = 0;
+sp[i][j] = 0;
+}
+}
+void creat();
+void display();
+void primsAlgo();
+void displaySPtree();
+};
+void Spanning_tree ::creat()
+{
+int i, j;
+int ch;
+cout << "Enter No. of vertices : ";
+cin >> V;
+do {
+cout << "\nEnter Edge : "<<endl;
+cin >> i >> j;
+cout << "\nEnter cost for " << i << " to " << j << " : ";
+cin >> a[i][j];
+a[j][i] = a[i][j];
+cout << "\nAdd another Edge? (0/1) : ";
+cin >> ch;
+} while (ch != 0);
+}
+void Spanning_tree::display()
+{
+cout<<"\nThe Adjacency Matrix is : \n";
+for (int i = 0; i < V; i++)
+{
+for (int j = 0; j < V; j++)
+{
+
+
+cout << a[i][j] << " ";
+}
+cout <<endl;
+}
+}
+void Spanning_tree::displaySPtree()
+{
+cout << "Spanning Tree : "<<endl;
+for (int i = 0; i < V; i++)
+{
+for (int j = 0; j < V; j++)
+{
+cout << sp[i][j] << " ";
+}
+cout <<endl;
+}
+cout << "\n\nMinimum Cost of Minimum Spanning Tree is : " << minCost;
+}
+void Spanning_tree::primsAlgo()
+{
+int cost[10][10], dist[10], source[10], visited[10];
+int mindist, v, u, i, j;
+for (i = 0; i < V; i++)
+{
+for (j = 0; j < V; j++)
+if (a[i][j] == 0)
+cost[i][j] = infinity;
+else
+cost[i][j] = a[i][j];
+}
+dist[0] = 0;
+visited[0] = 1;
+for (i = 1; i < V; i++)
+{
+dist[i] = cost[0][i];
+source[i] = 0;
+visited[i] = 0;
+}
+minCost = 0;
+E = V - 1;
+while (E > 0)
+{
+mindist = infinity;
+for (i = 1; i < V; i++)
+
+{
+if (visited[i] == 0 && dist[i] < mindist)
+{
+mindist = dist[i];
+v = i;
+}
+}
+u = source[v];
+sp[u][v] = dist[v];
+sp[v][u] = dist[v];
+E--;
+visited[v] = 1;
+for (i = 1; i < V; i++)
+{
+if (visited[i] == 0 && cost[i][v] < dist[i])
+{
+dist[i] = cost[i][v];
+source[i] = v;
+}
+}
+minCost = minCost + cost[u][v];
+}
+}
+int main()
+{
+Spanning_tree t;
+t.creat();
+t.display();
+t.primsAlgo();
+t.displaySPtree();
+return 0;
+}
