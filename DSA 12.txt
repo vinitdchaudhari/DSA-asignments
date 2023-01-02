@@ -1,0 +1,72 @@
+//Vinit Dipak Chaudhari (SYCOA34)
+//Quick sort
+#include <iostream>
+using namespace std;
+void swap(int *a,int *b)
+{
+int temp;
+temp=*a;
+*a = *b;
+*b = temp;
+}
+int partition(int a[], int low, int high)
+{
+int pivot = a[high]; // pivot last element
+int i= (low- 1);
+for (int j = low; j<high ; j++)
+{
+
+if (a[j] < pivot)
+
+{
+
+i++;
+swap(&a[i], &a[j]);
+}
+}
+swap(&a[i + 1], &a[high]);
+return (i + 1);
+}
+
+void quickSort(int a[], int low, int high)
+{
+if (low < high)
+{
+
+int pi = partition(a, low, high);
+quickSort(a, low, pi - 1);
+quickSort(a, pi + 1, high);
+}
+}
+void printArray(int a[],string name[] ,int size)
+{
+int i;
+for (i = 0; i < size; i++)
+cout << a[i] <<" "<<name[i]<<endl;
+cout << endl;
+}
+
+int main()
+{
+int n;
+cout<<"Enter Number of Employee : ";
+cin>>n;
+int a[n];
+float salary[n];
+string name[n];
+for(int i=0;i<n;i++)
+{
+cout<<"\nEnter Details for Emplyoee "<<i+1<<" : "<<endl;
+
+cout<<"Enter Name : ";
+cin>>name[i];
+cout<<"Enter salary : :";
+cin>>a[i];
+}
+int t = sizeof(a)/sizeof(a[0]);
+quickSort(a, 0, t-1);
+cout << "\nEmployee Data after Sorting \n\n";
+cout<<"salary"<<" "<<"name"<<endl;
+printArray( a,name, t);
+return 0;
+}
