@@ -1,0 +1,102 @@
+//Vinit Dipak Chaudhari
+//SYCOA34
+
+//infix to postfix
+#include <iostream>
+#include<stack>
+using namespace std;
+bool isoperator(char );
+bool isoperand(char );
+bool iseqlorhigher(char,char);
+bool isoperator(char c)
+{
+if(c=='+' || c=='-'|| c=='*' || c=='/' || c=='^' )
+return true;
+else
+return false;
+
+}
+bool isoperand(char c)
+{
+if(c>='A' && c<='Z')
+return true;
+if(c>='a' && c<='z')
+return true;
+if(c>='0'&& c<='9')
+return true;
+else
+return false;
+
+}
+int precedence(char op)
+{
+if(op=='+' || op=='-')
+return 1;
+if(op=='*' || op=='/')
+return 2;
+if(op=='^')
+return 3;
+return 0;
+}
+bool iseqlOrhigher (char op1, char op2)
+{
+int p1 = precedence(op1);
+int p2 = precedence(op2);
+if (p1 == p2)
+{
+if (op1 == '^' )
+return false;
+else
+return true;
+}
+return (p1>p2 ? true : false);
+}
+string convert(string infix_exp)
+{
+stack <char> S;
+
+string postfix ="";
+char ch;
+S.push( '(' );
+infix_exp += ')';
+for(int i = 0; i<infix_exp.length(); i++)
+{
+ch = infix_exp[i];
+if(ch == ' ')
+continue;
+else if(ch == '(')
+S.push(ch);
+else if(isoperand(ch))
+postfix += ch;
+else if(isoperator(ch))
+{
+while(!S.empty() && iseqlOrhigher(S.top(), ch))
+{
+postfix += S.top();
+S.pop();
+}
+S.push(ch);
+}
+else if(ch == ')')
+{
+while(!S.empty() && S.top() != '(')
+{
+postfix += S.top();
+
+S.pop();
+}
+S.pop();
+}
+}
+return postfix;
+}
+int main()
+{
+string infix_exp ,postfix_exp;
+cout << "enter your infix expression:" << endl;
+cin>> infix_exp;
+postfix_exp =convert(infix_exp);
+cout<<"infix expression = "<<infix_exp<<endl;
+cout<<"postfix expression = "<<postfix_exp<<endl;
+return 0;
+}
